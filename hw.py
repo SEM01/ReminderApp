@@ -1,14 +1,26 @@
 from dataclasses import dataclass, field
 from typing import Any
 import logging
+from logging.handlers import RotatingFileHandler
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(name)s - %(asctime)s - %(levelname)s - %(message)s",
-    filename="reminder.log",
-    filemode="a",
+# logging.basicConfig(
+#     level=logging.INFO,
+#     format="%(name)s - %(asctime)s - %(levelname)s - %(message)s",
+#     filename="reminder.log",
+#     filemode="a",
+# )
+logger_format = logging.Formatter(
+    "%(name)s - %(asctime)s - %(levelname)s - %(message)s"
 )
-logger = logging.getLogger()
+logger = logging.getLogger("Reminder LOG")
+handler = RotatingFileHandler(
+    filename="reminder.log",
+    maxBytes=1000,
+    backupCount=5,
+)
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
+handler.setFormatter(logger_format)
 
 
 def id_gen():
